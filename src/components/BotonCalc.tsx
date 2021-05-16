@@ -1,23 +1,32 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, TouchableOpacity} from 'react-native';
+import {TextoBoton, ColorBoton} from '../interfaces/Boton.interface';
 
 interface Props {
   texto: TextoBoton;
-  color: ColorBoton;
+  color?: ColorBoton;
+  ancho?: boolean;
 }
 
-type TextoBoton = 'C' | '+/-' | 'del' | '/';
-
-//  #9B9B9B gris claro
-//  #2D2D2D gris oscuro
-//  #FF9427 naranja
-type ColorBoton = '#9B9B9B' | '#2D2D2D' | '#FF9427';
-
-export const BotonCalc = ({texto, color = '#2D2D2D'}: Props) => {
+export const BotonCalc = ({texto, color = '#2D2D2D', ancho = false}: Props) => {
   return (
-    <View style={{...styles.boton, backgroundColor: color}}>
-      <Text style={styles.botonTexto}>{texto}</Text>
-    </View>
+    <TouchableOpacity>
+      <View
+        style={{
+          ...styles.boton,
+          backgroundColor: color,
+          width: ancho ? 180 : 80,
+        }}>
+        <Text
+          style={{
+            ...styles.botonTexto,
+            color: color === '#9B9B9B' ? 'black' : 'white',
+          }}>
+          {texto}
+        </Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 
@@ -34,6 +43,6 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 30,
     color: 'black',
-    fontWeight: '500',
+    fontWeight: 'bold',
   },
 });

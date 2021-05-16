@@ -12,7 +12,38 @@ export const CalculadoraScreen = () => {
   };
 
   const armarNumero = (numeroTexto: string) => {
-    setNumero(numero + numeroTexto);
+    // Verificar si ya hay un punto
+    if (numero.includes('.') && numeroTexto === '.') {
+      return;
+    }
+
+    if (numero.startsWith('0') || numero.startsWith('-0')) {
+      // Punto decimal
+      if (numeroTexto === '.') {
+        setNumero(numero + numeroTexto);
+        //Evaluar si es otro cero y hay un punto
+      } else if (numeroTexto === '0' && numero.includes('.')) {
+        setNumero(numero + numeroTexto);
+        // Evaluar si es diferente de cero y no tiene un punto
+      } else if (numeroTexto !== '0' && !numero.includes('.')) {
+        setNumero(numeroTexto);
+        // Evitar 0000.0
+      } else if (numeroTexto === '0' && !numero.includes('.')) {
+        setNumero(numero);
+      } else {
+        setNumero(numero + numeroTexto);
+      }
+    } else {
+      setNumero(numero + numeroTexto);
+    }
+  };
+
+  const positivoNegativo = () => {
+    if (numero.includes('-')) {
+      setNumero(numero.replace('-', ''));
+    } else {
+      setNumero('-' + numero);
+    }
   };
 
   return (
@@ -26,7 +57,7 @@ export const CalculadoraScreen = () => {
       </Text>
       <View style={globalStyles.fila}>
         <BotonCalc texto="C" color="#9B9B9B" accion={limpiar} />
-        <BotonCalc texto="+/-" color="#9B9B9B" accion={limpiar} />
+        <BotonCalc texto="+/-" color="#9B9B9B" accion={positivoNegativo} />
         <BotonCalc texto="del" color="#9B9B9B" accion={limpiar} />
         <BotonCalc texto="/" color="#FF9427" accion={limpiar} />
       </View>
@@ -51,7 +82,7 @@ export const CalculadoraScreen = () => {
       <View style={globalStyles.fila}>
         {/* así mandamos true por defecto en ancho */}
         <BotonCalc texto="0" ancho accion={armarNumero} />
-        <BotonCalc texto="." accion={limpiar} />
+        <BotonCalc texto="." accion={armarNumero} />
         <BotonCalc texto="=" color="#FF9427" accion={limpiar} />
       </View>
     </View>
